@@ -1,0 +1,287 @@
+body {
+  margin: 0;
+  padding: 0;
+  text-align: justify;
+  font-size: large;
+}
+ 
+#sidenav {
+  height: 100%; 
+  width: 150px; /* Set the width of the sidebar */
+  position: fixed; /* Fixed Sidebar (stay in place on scroll) */
+  bottom: 0; /* Stay at the top */
+  left: 0;
+  
+ 
+}
+
+#sidenav2 {
+  height: 100%; 
+  width: 150px; /* Set the width of the sidebar */
+  position: fixed; /* Fixed Sidebar (stay in place on scroll) */
+  bottom: 0; /* Stay at the top */
+  float: right;
+  right: 0;
+}
+
+#pagecontent {
+  margin: 0px 150px;
+  padding: 0 10px;
+}
+
+#logo {
+  float: left;
+  width: 40%;
+  height: 155px;
+  margin-bottom: 10px;
+}
+
+#welcome{
+  display: grid;
+  float: right;
+  width: 60%;
+  height: 155px;
+  text-align: center;
+  font-size: 60px;
+  margin: 0;
+  align-items: center;
+  
+}
+
+nav {
+  clear: both;
+  margin-top: 40px;
+  padding: 24px;
+  text-align: center;
+  font-family: Raleway;
+  box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
+  
+}
+#nav {
+  background: #000000;
+  
+}
+.link {
+  transition: 0.4s;
+  color: #ffffff;
+  font-size: 20px;
+  text-decoration: none;
+  padding: 0 10px;
+  margin: 0 10px;
+}
+.link:hover {
+  background-color: #ffffff;
+  color: #000000;
+  padding: 24px 10px;
+}
+
+/* Time table */
+table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+  
+}   
+
+th, td {
+  padding: 5px;
+  text-align: center;
+}
+
+.face{
+  float: left;
+  width: 30%;
+  object-fit:cover;
+  margin: 10px;
+  border: 2px solid grey;
+  height: 400px;
+}
+
+.email_link{
+  color: black;
+  text-decoration: none;
+}
+
+.Email{
+  font-weight: bold;
+  color: black;
+  text-decoration: none;  
+}
+
+.stdEmail{
+  color: black;
+  text-decoration: none;
+}
+#SE{
+  color: #42b3f5;
+  font-family: inherit;
+  font-size: 50px;
+  font-variant: normal;
+
+}
+#RN1{
+  color: darkgray;
+}
+#IoT{
+  color: darkblue;
+  font-family: inherit;
+  font-size: 50px;
+  font-variant: normal;
+}
+#RN2{
+  color: darkgray;
+}
+.COS10009{
+  background-color: darkred;
+  color: white;
+}
+.COS10004{
+  background-color: green ;
+}
+.COS10026{
+  background-color: purple;
+  color: white;
+}
+.TNE10006{
+  background-color: pink;
+}
+
+#job{
+  width: 70%;
+  float: left;
+
+  display: grid;
+  place-items: center end;
+
+}
+#job1{
+  width: 70%;
+  float: left;
+
+  display: grid;
+  place-items: center end;
+}
+#xD{
+  float: right;
+  margin: 10px;
+  padding: 10px;
+  width: 25%;
+  background-color: #a17d22;
+}
+#xD1{
+  float: right;
+  margin: 10px;
+  padding: 10px;
+  width: 25%;
+  background-color: #a17d22;
+}
+
+
+#beforeYou{
+    text-align: center;
+    font-size: small;
+    margin: 0;
+  }
+
+#you{
+  display: block;
+  margin: auto;
+  width: 50px;
+  height: 50px;
+}
+
+#clearAbove{clear: both;}
+#clearAbove1{clear: both;}
+
+#flexbox{
+  display: flex;
+  background-color: #9FE2BF;
+  margin: 0 200px;
+  height: 140px;
+  place-content: center;
+
+}
+.indp{
+  display: inline-block;
+  object-fit:cover;
+  width: 100px;
+  height: 100px; 
+  margin: 20px;
+  /* width: 20%;  */
+}
+#indp1 {
+  display: inline-block;
+  object-fit:cover;
+  width: 300px;
+  height: 100px; 
+  margin: 20px;
+}
+
+/* Cho enhancement page */
+.canMargin {margin-bottom: 10px;}
+
+/* Cho apply.html */
+#formTitle {
+  font-size: xx-large;
+  text-align: center;
+}
+
+#formTitle2 {
+  font-size: small;
+  text-align: center;
+}
+
+#applyButton{
+  margin-top: 10px;
+  /* Display flex */
+  display: flex;
+  flex-wrap: nowrap;
+
+  justify-content: center;
+  background-color: white;
+}
+
+input[type=submit], input[type=reset]{
+  background-color: #000000;
+  color: whitesmoke;
+  padding: 10px;
+} 
+
+
+
+#inh{
+  color: #100e36;
+
+}
+/*blink salary*/
+.blink1{
+  background: rgb(0, 0, 0);
+}
+#blink1{
+  color: #ffc310;
+  animation: blink-text 1.9s linear infinite;
+  font-size: 30px
+}
+.blink{
+  background: rgb(0, 0, 0);
+}
+#blink{
+  color: #ffc310;
+  animation: blink-text 1.9s linear infinite;
+  font-size: 30px
+}
+
+#dtInGen{
+  float:left
+}
+
+@keyframes blink-text {
+ 0% {
+  opacity: 0;
+ }
+ 50% {
+  opacity: 1;
+ }
+ 100% {
+  opacity: 0;
+ }
+}
