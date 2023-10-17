@@ -10,27 +10,14 @@
 	<link rel="stylesheet" type="text/css" href="styles/style.css">
 </head>
 <body>
-<div id="sidenav"> 
-		<video autoplay muted loop>
-			<source src="images/video.mp4" type="video/mp4">
-			Your browser does not support HTML5 video.
-		  </video>
-	</div>
-
-	<div id="sidenav2"> 
-		<video autoplay muted loop>
-			<source src="images/video.mp4" type="video/mp4">
-			Your browser does not support HTML5 video.
-		  </video>
-	</div>
+	<!-- 2 background vids on the sides -->
+<?php
+	include("bgvideo.inc")
+?>
 
 	<article id="pagecontent">
 
 	<!--Navigation bar-->
-	<a href="index.php">
-		<img id="logo" src="images/logo-Copy.png" alt="MTD Tech Corporate Offical Logo">
-	</a>
-	<h1 id="welcome">Welcome to our company</h1>
 <?php
     include("header.inc")
 ?>
