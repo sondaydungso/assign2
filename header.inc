@@ -1,5 +1,9 @@
 <?php
     echo "
+    <a href=\"index.php\">
+		<img id=\"logo\" src=\"images/logo-Copy.png\" alt=\"MTD Tech Corporate Offical Logo\">
+	</a>
+	<h1 id=\"welcome\">Welcome to our company</h1>
     <header>
     <nav id=\"nav\">
         <a class=\"link\" href=\"index.php\">Home</a>
