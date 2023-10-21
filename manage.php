@@ -64,7 +64,7 @@
                 . "<td>" . $row["DateOfBirth"] . "</td>\n"
                 . "<td>" . $row["Gender"] . "</td>\n"
                 . "<td>" . $row["StreetAddress"] . "</td>\n"
-                . "<td>" . $row["Suburb Town"] . "</td>\n"
+                . "<td>" . $row["SuburbTown"] . "</td>\n"
                 . "<td>" . $row["State"] . "</td>\n"
                 . "<td>" . $row["Postcode"] . "</td>\n"
                 . "<td>" . $row["EmailAddress"] . "</td>\n"
