@@ -7,12 +7,7 @@
 </head>
 <body>
 <?php
-	if (isset($_POST['skill'])){
-		$skill = implode(' and ', $_POST['skill']);
-	}else{
-		$skill = "";
-	}
-    $errormsg = "";
+	
     function sanitise_input($data){
         $data = trim($data);				//remove spaces
         $data = stripslashes($data);		//remove backslashes in front of quotes
@@ -53,7 +48,7 @@
 
 
 	    $suburb = sanitise_input($_POST["Suburb/town"]);			
-		if (!preg_match("/^[a-zA-Z]{1,20}$/", $suburb)) {
+		if (!preg_match("/^[a-zA-Z]{1,40}$/", $suburb)) {
 	        $errormsg .= "<p class='errormsg'>Your suburb must contains only alphabetical characters and in between 1-20 characters length.</p>\n";
 	    }
 	    //State validation
@@ -101,6 +96,10 @@
 				}
 			}
 	    }
+	    if (!in_array($gender, ['Male', 'Female', 'Other'])) {
+	    	$errormsg .= "<p> Please select a gender"
+       
+    }
 		
 ?>
 </body>
