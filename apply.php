@@ -12,7 +12,7 @@
 
 <body>
 	<!-- 2 background vids on the sides -->
-    <?php
+<?php
 	include("bgvideo.inc")
 ?>
 
@@ -132,13 +132,13 @@
     
     <label>Skill List</label>
     <p>
-        <label><input type="checkbox" name="skill[]" value="Front_end" checked/>Front-end Coding</label>
-        <label><input type="checkbox" name="skill[]" value="Back_end"/>Back-end Coding</label>
-        <label><input type="checkbox" name="skill[]" value="Teamwork_Ability"/>Teamwork Ability</label>
+        <label><input type="checkbox" name="skill[]" value="FrontEnd" checked/>Front-end Coding</label>
+        <label><input type="checkbox" name="skill[]" value="BackEnd"/>Back-end Coding</label>
+        <label><input type="checkbox" name="skill[]" value="TeamworkAbility"/>Teamwork Ability</label>
         <label><input type="checkbox" name="skill[]" value="Design"/>Design</label>
-        <label><input type="checkbox" name="skill[]" value="Stay_up_to_date"/>Stay up to date with latest technology</label>
+        <label><input type="checkbox" name="skill[]" value="StayUpToDate"/>Stay up to date with latest technology</label>
         <label><input type="checkbox" name="skill[]" value="Management"/>Management ability</label>
-        <label><input type="checkbox" name="skill[]" value="Other_skills"/>Other skills</label>
+        <label><input type="checkbox" name="skill[]" value="OtherSkills"/>Other skills</label>
 
     </p>   
     

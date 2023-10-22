@@ -98,12 +98,12 @@
 		return $msgerror;
 	}
 
-	//Deny direct access from browser
+	#Deny direct access from browser
 	if ($_SERVER['REQUEST_METHOD'] != 'POST') {
 		die("<h1>Access Denied</h1>");
 	}
 
-	//db connection
+	#db connection
 	require_once("settings.php");
 	$conn = @mysqli_connect(
 		$host,
@@ -116,6 +116,7 @@
 		echo "<h2>Database connection failure</h2>
 				<p>Please try again</p>";
 	} else {
+
 		#Input getting and sanitation
 		$position_code = sanitise_input($_POST["jobNum"]);			//Position Code input
 		$firstname = sanitise_input($_POST["firstName"]);			//FirstName input
@@ -144,11 +145,11 @@
 		if (!preg_match('/^[A-Za-z0-9]{5}$/', $position_code)) {
 			$errormsg = "<p>Position code must be exactly 5 alphanumeric characters.</p>";
 		}
-		if (!preg_match("/^[a-zA-Z ]{1,25}$/", $firstname )){	//Firstname Validation
-			$errormsg .= "<p>First name must be only alphabetical characters and it must between 1-25 characters.</p>\n";
+		if (!preg_match("/^[a-zA-Z ]{1,20}$/", $firstname )){	//Firstname Validation
+			$errormsg .= "<p>First name must be only alphabetical characters and it must be filled with maximum 20 characters.</p>\n";
 		}
-		if (!preg_match("/^[a-zA-Z ]{1,25}$/", $lastname)) { 	//Lastname Validation
-				$errormsg .= "<p>Last name must be only alphabetical characters and it must between 1-25 characters.</p>\n";
+		if (!preg_match("/^[a-zA-Z ]{1,20}$/", $lastname)) { 	//Lastname Validation
+				$errormsg .= "<p>Last name must be only alphabetical characters and it must be filled with maximum 20 characters.</p>\n";
 		}
 		if (!preg_match('/^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/((19|20)\d\d)$/', $DOB)) { //dob Validation
 			$errormsg .= "<p>Invalid date of birth. Please enter a valid date in the format dd/mm/yyyy and make sure you are between 15 and 80 years old.</p>";
@@ -165,10 +166,10 @@
 		}
 	
 		if (!preg_match("/^[a-zA-Z0-9 ,.'-]{1,40}$/", $street_address)) {//address validation
-			$errormsg .= "<p>Your address must contains only alphabetical characters, numbers, commas, dots and hyphens.</p>\n";
+			$errormsg .= "<p>Your address must contains only alphabetical characters and must be filled with maximum 40 characters.</p>\n";
 		}
 		if (!preg_match("/^[a-zA-Z]{1,40}$/", $suburb)) {		//Suburb validation
-			$errormsg .= "<p>Your suburb must contains only alphabetical characters and in between 1-20 characters length.</p>\n";
+			$errormsg .= "<p>Your suburb must contains only alphabetical characters and must be filled with maximum 40 characters 40.</p>\n";
 		}
 		if (empty($state)){								//State Validation
 			$errormsg .= "<p>You must select your state.</p>\n";
@@ -185,25 +186,74 @@
 			}
 		}
 
-		//Displaying Errormsg or continueing the program
+		#Displaying Errormsg or continueing the program
 		if ($errormsg != ""){
 			echo ("$errormsg");
 		} else {
-			
 
 			#Testing output of data Input and validation
-			echo "<p>Position Code: $position_code</p>";
-			echo "<p>First Name: $firstname</p>";
-			echo "<p>Last Name: $lastname</p>";
-			echo "<p>Gender: $gender</p>";
-			echo "<p>Email: $email</p>";
-			echo "<p>Date of Birth: $DOB</p>";
-			echo "<p>Street Address: $street_address</p>";
-			echo "<p>Suburb: $suburb</p>";
-			echo "<p>State: $state</p>";
-			echo "<p>Postcode: $postcode</p>";
-			echo "<p>Skillset: " . implode(", ", $skill_set) . "</p>";
-			echo "<p>Other skill: $other_skill ";
+			// echo "<p>Position Code: $position_code</p>";
+			// echo "<p>First Name: $firstname</p>";
+			// echo "<p>Last Name: $lastname</p>";
+			// echo "<p>Gender: $gender</p>";
+			// echo "<p>Email: $email</p>";
+			// echo "<p>Date of Birth: $DOB</p>";
+			// echo "<p>Street Address: $street_address</p>";
+			// echo "<p>Suburb: $suburb</p>";
+			// echo "<p>Phone Number: $"
+			// echo "<p>State: $state</p>";
+			// echo "<p>Postcode: $postcode</p>";
+			// echo "<p>Skillset: " . implode(", ", $skill_set) . "</p>";
+			// echo "<p>Other skill: $other_skill ";
+		
+			$sql_table = "eoi";
+			#Table auto create
+			$create_table_query = "CREATE TABLE IF NOT EXISTS $sql_table (
+									EOInumber INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+									JobReferenceNumber CHAR(5) NOT NULL,
+									FirstName VARCHAR(20) NOT NULL,
+									LastName VARCHAR(20) NOT NULL,
+									StreetAddress VARCHAR(40) NOT NULL,
+									SuburbTown VARCHAR(40) NOT NULL,
+									State VARCHAR(3) NOT NULL,
+									Postcode CHAR(4) NOT NULL,
+									EmailAddress TEXT NOT NULL,
+									PhoneNumber VARCHAR(20) NOT NULL,
+									Skills TEXT NOT NULL,
+									OtherSkills TEXT,
+									Status ENUM('New', 'Current', 'Final') DEFAULT 'New'
+									)";
+			$result = mysqli_query($conn, $create_table_query);			//SQL Execution
+			if (!$result) {
+				echo "Unable to CREATE, Error: " . mysqli_error($conn);
+			} 
+
+
+			#Pushing data into table in db
+			$skill_string = "";					//Implode skill_set list into a string
+			foreach ($skill_set as $skill) {
+				$skill_string .= "$skill ";
+			}
+			$query = $query = "INSERT INTO $sql_table (JobReferenceNumber, FirstName, LastName, 
+            											StreetAddress, SuburbTown, State, Postcode,
+            											EmailAddress, PhoneNumber, Skills, OtherSkills,
+            											Status
+            											) VALUES ('$position_code', '$firstname', '$lastname', 
+            														'$street_address', '$suburb', '$state', '$postcode', 
+            														'$email', '$phone', '$skill_string', '$other_skill',
+																	'New'
+            											)";
+ 
+			$result = mysqli_query($conn, $query);
+			if (!$result) {
+				echo "Unable to submit, Error:";
+				echo ("<p>". "". mysqli_error($conn) ."/<p>");
+			} else {
+				$eoiNumber = mysqli_insert_id($conn); // Get the EOInumber
+				echo ("<p>Successfully applied. You are the <strong>$eoiNumber</strong> to submitted. Goodluck on the your journey becoming one of us</p>");
+				echo ("Your EOInumber is: $eoiNumber");
+			}
+
 		}
 	}
 	 
