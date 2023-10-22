@@ -124,7 +124,7 @@
 		$DOB = sanitise_input($_POST["birthday"]);					//Birthday input
 		$gender = "";												//Gender input
 		if (isset ($_POST["gender"])) {
-            $gender = $_POST["gender"];
+            $gender = sanitise_input($_POST["gender"]);
 		}
 		$email = sanitise_input($_POST["email"]);					//Email input
 		$phone = sanitise_input($_POST["telephone"]);				//phone number input
@@ -142,8 +142,13 @@
 
 		#Input Validation
 		$errormsg = "";
+		$possible_position_code = array("12690", "13512");
 		if (!preg_match('/^[A-Za-z0-9]{5}$/', $position_code)) {
 			$errormsg = "<p>Position code must be exactly 5 alphanumeric characters.</p>";
+		} else {
+			if (!in_array($position_code, $possible_position_code)) {
+				echo "<p>The position code you enter does not match any of our positions' codes.";
+			}
 		}
 		if (!preg_match("/^[a-zA-Z ]{1,20}$/", $firstname )){	//Firstname Validation
 			$errormsg .= "<p>First name must be only alphabetical characters and it must be filled with maximum 20 characters.</p>\n";
@@ -161,7 +166,7 @@
 			$errormsg .= "<p>Your email must be in the format of something@something.something</p>\n";
 		}
 
-		if (!preg_match("/^\d{8,12}$/", $phone)) {				//phone number validation
+		if (!preg_match("/^[0-9 +]{8,12}$/", $phone)) {				//phone number validation
 			$errormsg .= "<p>Your phone number must contains only numbers and in between 8-12 digits length .</p>\n";
 		}
 	
@@ -171,7 +176,8 @@
 		if (!preg_match("/^[a-zA-Z]{1,40}$/", $suburb)) {		//Suburb validation
 			$errormsg .= "<p>Your suburb must contains only alphabetical characters and must be filled with maximum 40 characters 40.</p>\n";
 		}
-		if (empty($state)){								//State Validation
+		$possible_state = array("VIC", "NSW", "QLD", "NT", "WA", "SA", "TAS", "ACT");
+		if (!in_array($state, $possible_state)){								//State Validation
 			$errormsg .= "<p>You must select your state.</p>\n";
 		}
 		if (!preg_match("/^\d{4}$/", $postcode)) {			//Post code validation

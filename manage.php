@@ -10,27 +10,28 @@
 
 <body>
 
-<h1>List of Actions</h1>
-<ol>
-    <li>List all EOIs</li>
-    <li>List all EOIs for a particular position</li>
-    <li>List all EOIs for a particular applicant given their first name, last name or both.</li>
-    <li>Delete all EOIs with a specified job reference number</li>
-    <li>Change the Status of an EOI</li>
-</ol>
-
+<form id="manage" method="post" action="manage.php"> 
+<h1>Which method of searching do you prefer?</h1>
+    <label><input type="radio" name="action" value="1"/>List all EOIs.</label><br>
+    <label><input type="radio" name="action" value="2"/>List all EOIs for a particular position code. (Our 2 position codes are 12690 and 13512)</label><br>
+    <label><input type="radio" name="action" value="3"/>List all EOIs for a particular applicant given their first name, last name or both.</label><br>
+    <label><input type="radio" name="action" value="4"/>Delete all EOIs with a specified job reference number.</label><br>
+    <label><input type="radio" name="action" value="5"/>Change the Status of an EOI.</label><br>
+    <br>
+    <div> <input  type="submit" value="Apply Search"/> </div>
+    <div> <input  type="reset" value="Reset Answers"/> </div>
+</form>
 <?php
     require ("settings.php");
+    function sanitise_input($data){ 
+        $data = trim($data);				//remove spaces
+        $data = stripslashes($data);		//remove backslashes in front of quotes
+        $data = htmlspecialchars($data);	//convert HTML special characters to HTML code
+        return $data;
+    }
 
-    $conn = @mysqli_connect($host, $user, $pwd, $sql_db);
-
-    if (!$conn) {
-        echo "<p>Database connection failure</p>";
-    } else {
-        $sql_table = "eoi";
-    
-        $query = "SELECT * FROM eoi ORDER BY EOInumber";
-
+    function print_table($conn, $query) {
+        echo "<p>$query</p>";
         $result = mysqli_query($conn, $query);
 
         if (!$result) {
@@ -42,8 +43,6 @@
             . "<th scope=\"col\">Job Reference Number</th>\n"
             . "<th scope=\"col\">First Name</th>\n"
             . "<th scope=\"col\">Last Name</th>\n"
-            . "<th scope=\"col\">Date of Birth</th>\n"
-            . "<th scope=\"col\">Gender</th>\n"
             . "<th scope=\"col\">Street Address</th>\n"
             . "<th scope=\"col\">Suburb/Town</th>\n"
             . "<th scope=\"col\">State</th>\n"
@@ -61,8 +60,6 @@
                 . "<td>" . $row["JobReferenceNumber"] . "</td>\n"
                 . "<td>" . $row["FirstName"] . "</td>\n"
                 . "<td>" . $row["LastName"] . "</td>\n"
-                . "<td>" . $row["DateOfBirth"] . "</td>\n"
-                . "<td>" . $row["Gender"] . "</td>\n"
                 . "<td>" . $row["StreetAddress"] . "</td>\n"
                 . "<td>" . $row["SuburbTown"] . "</td>\n"
                 . "<td>" . $row["State"] . "</td>\n"
@@ -74,14 +71,113 @@
                 . "<td>" . $row["Status"] . "</td>\n"
                 . "</tr>\n";
             }
-        echo "</table>\n";
-        
-        #free up the memory, after using the result pointer
-        mysqli_free_result($result);
-        }
-        mysqli_close($conn);
+            echo "</table>\n";
+
+            #free up the memory, after using the result pointer
+            mysqli_free_result($result);
+        }   
     }
 
+    $conn = @mysqli_connect($host, $user, $pwd, $sql_db);
+
+    if (!$conn) {
+        echo "<p>Database connection failure</p>";
+    } else {
+        $sql_table = "eoi";
+
+        if (empty($_POST["action"])) {
+			echo "<p>Please select a search option.</p>";
+		} else 
+        { //action exists after this
+            $action = sanitise_input($_POST["action"]);
+
+            switch ($action) {
+                case "1":
+                    $query = "SELECT * FROM eoi ORDER BY EOInumber";
+
+                    print_table($conn, $query);
+                break;
+                case "2":
+                    echo "<p>
+                    <form id=\"manage2\" method=\"post\" action=\"manage.php\"> 
+                    <label for=\"jobID\">Which job ID do you want to search?
+                    <select name=\"jobID\" id=\"jobID\" required>
+                        <option value=\"\">Please select</option>
+                        <option value=\"12690\">12690 (Software Engineer)</option>
+                        <option value=\"13512\">13512 (IoT Programmer)</option>
+                    </select>
+                    </label>
+                    
+                    <input hidden name=\"action\" value=\"2\"/>
+
+                    <div> <input  type=\"submit\" value=\"Apply Search\"/> </div>
+                    <div> <input  type=\"reset\" value=\"Reset Answers\"/> </div>
+                    </form>
+                    </p>"; 
+                    if (!empty($_POST["jobID"])) {
+                        $jobID = $_POST["jobID"];
+                        $query = "SELECT * FROM eoi WHERE JobReferenceNumber = $jobID ORDER BY EOInumber";
+                        print_table($conn, $query);
+                    }     
+                break;
+
+                case "3":
+                    echo "<p>
+                    <form id=\"manage3\" method=\"post\" action=\"manage.php\"> 
+                    <label for=\"jobID\">What is the name of the applicant you want to search?</label>
+                    <label for=\"firstName\">First Name
+                    <input type=\"text\" name=\"firstName\" id=\"firstName\" 
+                    placeholder=\"E.g. Duy Tan\"
+                    /></label>
+
+                    <label for=\"familyName\">Last Name
+                    <input type=\"text\" name=\"familyName\" id=\"familyName\" 
+                    placeholder=\"E.g. Pham\"
+                    /></label>
+                    
+                    <input hidden name=\"action\" value=\"3\"/>
+
+                    <div> <input  type=\"submit\" value=\"Apply Search\"/> </div>
+                    <div> <input  type=\"reset\" value=\"Reset Answers\"/> </div>
+                    </form>
+                    </p>"; 
+                    if (!(empty($_POST["firstName"]) AND empty($_POST["familyName"]))) {
+                        if (!(empty($_POST["firstName"])) AND empty($_POST["familyName"])) {
+                            $firstName = $_POST["firstName"];
+                            $query = "SELECT * FROM eoi WHERE FirstName = '$firstName' ORDER BY EOInumber";
+                        }
+                        if (empty($_POST["firstName"]) AND !(empty($_POST["familyName"]))) {
+                            $familyName = $_POST["familyName"];
+                            $query = "SELECT * FROM eoi WHERE LastName = '$familyName' ORDER BY EOInumber";
+                        }
+                        if (!empty($_POST["firstName"]) AND !empty($_POST["familyName"])) {
+                            $firstName = $_POST["firstName"];
+                            $familyName = $_POST["familyName"];
+                            $query = "SELECT * FROM eoi WHERE FirstName = '$firstName' AND LastName = '$familyName' ORDER BY EOInumber";
+                        }
+                        print_table($conn, $query);
+                    } else {
+                        echo "<p>Please enter the name of the applicant you're looking for. </p>";
+                    }
+                break;
+
+                
+
+                // case "4":
+                //     $query = "SELECT * FROM eoi ORDER BY EOInumber";
+                //     return $query;
+                // case "5":
+                //     $query = "SELECT * FROM eoi ORDER BY EOInumber";
+                //     return $query;
+            }
+
+
+            
+
+            mysqli_close($conn);
+        }   
+    }
 ?>
+
 </body>
 </html>
