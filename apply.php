@@ -70,7 +70,7 @@
         <legend>Gender</legend>
         <label><input type="radio" name="gender" value="male"/>Male</label>
         <label><input type="radio" name="gender" value="female"/>Female</label>
-        <label><input type="radio" name="gender" value="Rather_not_say"/>Rather not say</label>
+        <label><input type="radio" name="gender" value="rather_not_say"/>Rather not say</label>
         <label><input type="radio" name="gender" value="other"/>Other</label>
     </fieldset>
 
@@ -90,7 +90,7 @@
         
     <p><label for="state">State
         <select name="state" id="state" required>
-            <option value="">Please select</option>
+            <option value="invalid">Please select</option>
             <option value="VIC">VIC</option>
             <option value="NSW">NSW</option>
             <option value="QLD">QLD</option>
@@ -132,18 +132,19 @@
     
     <label>Skill List</label>
     <p>
-        <label><input type="checkbox" name="skill[]" value="front" checked/>Front-end Coding</label>
-        <label><input type="checkbox" name="skill[]" value="back"/>Back-end Coding</label>
-        <label><input type="checkbox" name="skill[]" value="teamworkAbility"/>Teamwork Ability</label>
-        <label><input type="checkbox" name="skill[]" value="design"/>Design</label>
-        <label><input type="checkbox" name="skill[]" value="uptodate"/>Stay up to date with latest technology</label>
-        <label><input type="checkbox" name="skill[]" value="management"/>Management ability</label>
-        <label><input type="checkbox" name="skill[]" value="otherSkill"/>Other skills</label>
+        <label><input type="checkbox" name="skill[]" value="Front_end" checked/>Front-end Coding</label>
+        <label><input type="checkbox" name="skill[]" value="Back_end"/>Back-end Coding</label>
+        <label><input type="checkbox" name="skill[]" value="Teamwork_Ability"/>Teamwork Ability</label>
+        <label><input type="checkbox" name="skill[]" value="Design"/>Design</label>
+        <label><input type="checkbox" name="skill[]" value="Stay_up_to_date"/>Stay up to date with latest technology</label>
+        <label><input type="checkbox" name="skill[]" value="Management"/>Management ability</label>
+        <label><input type="checkbox" name="skill[]" value="Other_skills"/>Other skills</label>
+
     </p>   
     
     <p>
-        <label for="otherSkills"> Other skills <br>
-        <textarea id="otherSkills" name="otherSkills" rows="4" cols="60" placeholder="Please write description of your other skills here!"></textarea>
+        <label for="Other_skills"> Other skills <br>
+        <textarea id="Other_skills" name="Other_skills" rows="4" cols="60" placeholder="Please write description of your other skills here!"></textarea>
         </label>    
     </p>
 

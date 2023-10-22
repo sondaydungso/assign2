@@ -116,23 +116,28 @@
 		echo "<h2>Database connection failure</h2>
 				<p>Please try again</p>";
 	} else {
-		//Input getting and sanitation
-		$position_code = sanitise_input($_POST["jobNum"]);
-		$firstname = sanitise_input($_POST["firstName"]);
-		$lastname = sanitise_input($_POST["familyName"]);
-		$DOB = sanitise_input($_POST["birthday"]);
-		$gender = "";
+		#Input getting and sanitation
+		$position_code = sanitise_input($_POST["jobNum"]);			//Position Code input
+		$firstname = sanitise_input($_POST["firstName"]);			//FirstName input
+		$lastname = sanitise_input($_POST["familyName"]);			//FamilyName input
+		$DOB = sanitise_input($_POST["birthday"]);					//Birthday input
+		$gender = "";												//Gender input
 		if (isset ($_POST["gender"])) {
             $gender = $_POST["gender"];
 		}
-		$email = sanitise_input($_POST["email"]);		
-		$phone = sanitise_input($_POST["telephone"]);	
-		$street_address = sanitise_input($_POST["streetAddress"]);	
-		$suburb = sanitise_input($_POST["suburb"]);
-		$state = sanitise_input($_POST["state"]);
-		$postcode = sanitise_input($_POST["postcode"]);		
+		$email = sanitise_input($_POST["email"]);					//Email input
+		$phone = sanitise_input($_POST["telephone"]);				//phone number input
+		$street_address = sanitise_input($_POST["streetAddress"]);	//Address Input
+		$suburb = sanitise_input($_POST["suburb"]);					//suburb Input
+		$state = sanitise_input($_POST["state"]);					//State Input
+		$postcode = sanitise_input($_POST["postcode"]);				//postcode Input
 		
-		//Input Validation
+		$skill_set = [];
+		if (isset($_POST["skill"])) {
+			$skill_set = $_POST["skill"];
+		}
+
+		#Input Validation
 		$errormsg = "";
 		if (!preg_match('/^[A-Za-z0-9]{5}$/', $position_code)) {
 			$errormsg = "<p>Position code must be exactly 5 alphanumeric characters.</p>";
@@ -163,7 +168,6 @@
 		if (!preg_match("/^[a-zA-Z]{1,40}$/", $suburb)) {		//Suburb validation
 			$errormsg .= "<p>Your suburb must contains only alphabetical characters and in between 1-20 characters length.</p>\n";
 		}
-
 		if (empty($state)){								//State Validation
 			$errormsg .= "<p>You must select your state.</p>\n";
 		}
@@ -171,7 +175,10 @@
 			$errormsg .= "<p>Your post code must be a 4-digit number.</p>\n";
 		} else {
 				$errormsg .= state_postcode_validation($state, $postcode);
-				}	
+				}
+				
+				
+		//Displaying Errormsg or continueing the program
 		if ($errormsg != ""){
 			echo ("$errormsg");
 		} else {
@@ -186,7 +193,8 @@
 			echo "<p>Street Address: $street_address</p>";
 			echo "<p>Suburb: $suburb</p>";
 			echo "<p>State: $state</p>";
-			echo "<p>Postcode: $postcode</p>";		
+			echo "<p>Postcode: $postcode</p>";
+			echo "<p>Skillset: " . implode(", ", $skill_set) . "</p>";
 		}
 	}
 	 
