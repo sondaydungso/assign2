@@ -7,99 +7,190 @@
 </head>
 <body>
 <?php
-	
-    function sanitise_input($data){
+
+	//Data sanitisation func
+	function sanitise_input($data){ 
         $data = trim($data);				//remove spaces
         $data = stripslashes($data);		//remove backslashes in front of quotes
         $data = htmlspecialchars($data);	//convert HTML special characters to HTML code
         return $data;
     }
-    function checkInt($number){		//return true if number is a positive integer
-        $number = filter_var($number, FILTER_VALIDATE_INT);
-        return ($number !== FALSE && $number > 0);
-    }
-    $firstname = sanitise_input($_POST["First_name"]);
-    if (!preg_match("/^[a-zA-Z]{1,25}$/", $firstname )){
-        $errormsg .= "<p class='errormsg'>First name must be only alphabetical characters and it must between 1-25 characters.</p>\n";
-    }
-    $lastname = sanitise_input($_POST["last_Name"]);		
-		
-    if (!preg_match("/^[a-zA-Z]{1,25}$/", $lastname)) {
-	        $errormsg .= "<p class='errormsg'>Last name must be only alphabetical characters and it must between 1-25 characters.</p>\n";
+
+	function state_postcode_validation ($state, $postcode){
+		$postcode = (int)$postcode;
+		$msgerror = "";
+		switch ($state) {
+			//VIC
+			case "VIC":
+				if (($postcode <= 2999 || $postcode >= 4000) && ($postcode <= 7999 || $postcode >= 9000)) {
+					$msgerror = "<p>VIC postcode must be in the range of 3000 - 3999 or 8000 - 8999</p>";
+				}
+				break;
+			
+			//NSW
+			case "NSW":
+				if (($postcode <= 999|| $postcode >= 2000) && 
+					($postcode <= 1999|| $postcode >= 2600) && 
+					($postcode <= 2618|| $postcode >= 2899) &&
+					($postcode <= 2922|| $postcode >= 3000)
+				) {
+					$msgerror = "<p>NSW postcode must be in the range of 1000 - 1999 or 2000 - 2599 or 2619 - 2898 or 2921 - 2999</p>";
+				}
+				break;
+					 
+			//ACT
+			case "ACT":
+				if (($postcode <= 199|| $postcode >= 300) &&
+				($postcode <= 2599|| $postcode >= 2619) &&
+				($postcode <= 2899|| $postcode >= 2919) 
+				) {
+					$msgerror = "<p>ACT postcode must be in the range of 200 - 299 or 2600 - 2620 or 2900 - 2920</p>";
+				}
+				break;
+
+			//QLD	
+			case "QLD":
+				if (($postcode <= 3999|| $postcode >= 5000) &&
+				 	($postcode <= 8999 || $postcode >= 10000)
+				 ) {
+					$msgerror = "<p>QLD postcode must be in range of 4000 - 4999 or 9000 - 9999</p>";
+				} 
+				break;
+			
+			//SA
+			case "SA":
+				if (($postcode <= 4999|| $postcode >= 5800) &&
+					($postcode <= 5799|| $postcode >= 6000)
+				) {
+					$msgerror = "<p>SA postcode must be in range of 5000 - 57999 or 5800 - 5999</p>";
+				}
+				break;
+
+			//WA
+			case "WA":
+				if (($postcode <= 5999 || $postcode >= 6798) &&
+					($postcode <= 6799 || $postcode >= 7000) 
+				) {
+					$msgerror = "<p>WA postcode must be in range of 6000 - 6797 or 6800 - 6999</p>";
+				}
+				break;
+
+			//TAS
+			case "TAS":
+				if (($postcode <= 6999|| $postcode >= 7800) &&
+					($postcode <= 7799|| $postcode >= 8000)
+				)	{
+					$msgerror = "<p>TAS postcode must be in range of 7000 - 7799 or 7800 - 7999</p>";
+				}
+				break;
+
+			//NT
+			case "NT":
+				if (($postcode <= 799|| $postcode >= 900) &&
+					($postcode <= 899|| $postcode >= 1000)
+				) {
+					$msgerror = "<p>NT postcode must be in range of 800 - 899 or 900 - 999</p>";
+				}
+				break;
+
+ 		}
+
+		return $msgerror;
 	}
 
-	    //Last name validation
-	    $email = sanitise_input($_POST["Email"]);			
-		if (!preg_match("/\S+@\S+\.\S+/", $email)) {
-	        $errormsg .= "<p class='errormsg'>Your email must be in the format of something@something.something</p>\n";
-	    }
+	//Deny direct access from browser
+	if ($_SERVER['REQUEST_METHOD'] != 'POST') {
+		die("<h1>Access Denied</h1>");
+	}
 
-        $phone = sanitise_input($_POST["Phone_number"]);			//sanitise input
-		if (!preg_match("/^\d{8,12}$/", $phone)) {
-	        $errormsg .= "<p class='errormsg'>Your phone number must contains only numbers and in between 8-12 digits length .</p>\n";
-	    }
+	//db connection
+	require_once("settings.php");
+	$conn = @mysqli_connect(
+		$host,
+		$user,
+		$pwd,
+		$sql_db
+	);
 
-        
-	    $street_address = sanitise_input($_POST["Street"]);		
-		if (!preg_match("/^[a-zA-Z0-9 ,.'-]{1,40}$/", $address)) {
-	        $errormsg .= "<p class='errormsg'>Your address must contains only alphabetical characters, numbers, commas, dots and hyphens.</p>\n";
-	    }
-	    //Suburb validation
-
-
-	    $suburb = sanitise_input($_POST["Suburb/town"]);			
-		if (!preg_match("/^[a-zA-Z]{1,40}$/", $suburb)) {
-	        $errormsg .= "<p class='errormsg'>Your suburb must contains only alphabetical characters and in between 1-20 characters length.</p>\n";
-	    }
-	    //State validation
-
-
-	    $state = sanitise_input($_POST["State"]);			
-		if ($state == "none"){								
-			$errormsg .= "<p class='errormsg'>You must select your state.</p>\n";
+	if (!$conn) { 
+		echo "<h2>Database connection failure</h2>
+				<p>Please try again</p>";
+	} else {
+		//Input getting and sanitation
+		$position_code = sanitise_input($_POST["jobNum"]);
+		$firstname = sanitise_input($_POST["firstName"]);
+		$lastname = sanitise_input($_POST["familyName"]);
+		$DOB = sanitise_input($_POST["birthday"]);
+		$gender = "";
+		if (isset ($_POST["gender"])) {
+            $gender = $_POST["gender"];
+		}
+		$email = sanitise_input($_POST["email"]);		
+		$phone = sanitise_input($_POST["telephone"]);	
+		$street_address = sanitise_input($_POST["streetAddress"]);	
+		$suburb = sanitise_input($_POST["suburb"]);
+		$state = sanitise_input($_POST["state"]);
+		$postcode = sanitise_input($_POST["postcode"]);		
+		
+		//Input Validation
+		$errormsg = "";
+		if (!preg_match('/^[A-Za-z0-9]{5}$/', $position_code)) {
+			$errormsg = "<p>Position code must be exactly 5 alphanumeric characters.</p>";
+		}
+		if (!preg_match("/^[a-zA-Z ]{1,25}$/", $firstname )){	//Firstname Validation
+			$errormsg .= "<p>First name must be only alphabetical characters and it must between 1-25 characters.</p>\n";
+		}
+		if (!preg_match("/^[a-zA-Z ]{1,25}$/", $lastname)) { 	//Lastname Validation
+				$errormsg .= "<p>Last name must be only alphabetical characters and it must between 1-25 characters.</p>\n";
+		}
+		if (!preg_match('/^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/((19|20)\d\d)$/', $DOB)) { //dob Validation
+			$errormsg .= "<p>Invalid date of birth. Please enter a valid date in the format dd/mm/yyyy and make sure you are between 15 and 80 years old.</p>";
+		}
+		if (empty($gender)) {
+			$errormsg .= "<p>Your gender must be chosen</p>";
+		}
+		if (!preg_match("/\S+@\S+\.\S+/", $email)) {	 		//email validation
+			$errormsg .= "<p>Your email must be in the format of something@something.something</p>\n";
 		}
 
+		if (!preg_match("/^\d{8,12}$/", $phone)) {				//phone number validation
+			$errormsg .= "<p>Your phone number must contains only numbers and in between 8-12 digits length .</p>\n";
+		}
+	
+		if (!preg_match("/^[a-zA-Z0-9 ,.'-]{1,40}$/", $street_address)) {//address validation
+			$errormsg .= "<p>Your address must contains only alphabetical characters, numbers, commas, dots and hyphens.</p>\n";
+		}
+		if (!preg_match("/^[a-zA-Z]{1,40}$/", $suburb)) {		//Suburb validation
+			$errormsg .= "<p>Your suburb must contains only alphabetical characters and in between 1-20 characters length.</p>\n";
+		}
 
-        $postcode = sanitise_input($_POST["Postcode"]);		//sanitise input
-		if (!preg_match("/^\d{4}$/", $postcode)) {
-	        $errormsg .= "<p class='errormsg'>Your post code must be a 4-digit number.</p>\n";
-	    }
-	    else{
-	    	switch ($state){
-			case "VIC":
-				if ($postcode[0] != "3" && $postcode[0] != "8"){					//VIC post code must start with 3 or 8
-					$errormsg .= "<p class='errormsg'>VIC post code must start with 3 or 8.</p>\n";
-				}
-			case "NSW":
-				if ($postcode[0] != "1" && $postcode[0] != "2"){					//NSW post code must start with 1 or 2
-					$errormsg  .= "<p class='errormsg'>NSW post code must start with 1 or 2.</p>\n";
-				}
-			case "QLD":
-				if ($postcode[0] != "4" && $postcode[0] != "9"){					//QLD post code must start with 4 or 9
-					$errormsg  .= "<p class='errormsg'>QLD post code must start with 4 or 9.</p>\n";
-				}
-			case "WA":
-				if ($postcode[0] != "6"){										//NA post code must start with 6
-					$errormsg  .= "<p class='errormsg'>WA post code must start with 6.</p>\n";
-				}
-			case "SA":
-				if ($postcode[0] != "5"){										//SA post code must start with 5
-					$errormsg  .= "<p class='errormsg'>SA post code must start with 5.</p>\n";
-				}
-			case "TAS":
-				if ($postcode[0] != "7"){										//TAS post code must start with 7
-					$errormsg  .= "<p class='errormsg'>TAS post code must start with 7.</p>\n";
-				}
-			case "ACT":
-				if ($postcode[0] != "0"){										//NT and ACT post code must start with 0
-					$errormsg .= "<p class='errormsg'>$state post code must start with 0.</p>\n";
-				}
-			}
-	    }
-	    if (!in_array($gender, ['Male', 'Female', 'Other'])) {
-	    	$errormsg .= "<p> Please select a gender"
-       
-    }
+		if (empty($state)){								//State Validation
+			$errormsg .= "<p>You must select your state.</p>\n";
+		}
+		if (!preg_match("/^\d{4}$/", $postcode)) {			//Post code validation
+			$errormsg .= "<p>Your post code must be a 4-digit number.</p>\n";
+		} else {
+				$errormsg .= state_postcode_validation($state, $postcode);
+				}	
+		if ($errormsg != ""){
+			echo ("$errormsg");
+		} else {
+
+			#Testing output of data Input and validation
+			echo "<p>Position Code: $position_code</p>";
+			echo "<p>First Name: $firstname</p>";
+			echo "<p>Last Name: $lastname</p>";
+			echo "<p>Gender: $gender</p>";
+			echo "<p>Email: $email</p>";
+			echo "<p>Date of Birth: $DOB</p>";
+			echo "<p>Street Address: $street_address</p>";
+			echo "<p>Suburb: $suburb</p>";
+			echo "<p>State: $state</p>";
+			echo "<p>Postcode: $postcode</p>";		
+		}
+	}
+	 
+    
 		
 ?>
 </body>

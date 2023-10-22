@@ -25,7 +25,7 @@
 
 
 
-<form id="application" method="post" action="https://mercury.swin.edu.au/it000000/formtest.php">
+<form id="application" method="post" action="processEOI.php" novalidate=”novalidate”>
 <h1 id="formTitle">Tech Position Application Form</h1>
 <h2 id="formTitle2">MTD CORPORATE</h2>
 
@@ -52,7 +52,7 @@
         placeholder="E.g. Duy Tan"
         /></label>
 
-        <label for="familyName">First Name
+        <label for="familyName">Last Name
         <input type="text" name="familyName" id="familyName" 
         pattern="^[A-Za-z ]{1,20}$"
         required="required"
@@ -68,9 +68,9 @@
 
     <fieldset>
         <legend>Gender</legend>
-        <label><input type="radio" name="gender" value="male" required/>Male</label>
+        <label><input type="radio" name="gender" value="male"/>Male</label>
         <label><input type="radio" name="gender" value="female"/>Female</label>
-        <label><input type="radio" name="gender" value="female"/>Rather not say</label>
+        <label><input type="radio" name="gender" value="Rather_not_say"/>Rather not say</label>
         <label><input type="radio" name="gender" value="other"/>Other</label>
     </fieldset>
 
