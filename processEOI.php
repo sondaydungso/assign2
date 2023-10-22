@@ -132,10 +132,12 @@
 		$state = sanitise_input($_POST["state"]);					//State Input
 		$postcode = sanitise_input($_POST["postcode"]);				//postcode Input
 		
-		$skill_set = [];
+		$skill_set = [];											//Skill list input
 		if (isset($_POST["skill"])) {
 			$skill_set = $_POST["skill"];
 		}
+
+		$other_skill = sanitise_input($_POST["Other_skills"]);		//Other skill input
 
 		#Input Validation
 		$errormsg = "";
@@ -176,12 +178,18 @@
 		} else {
 				$errormsg .= state_postcode_validation($state, $postcode);
 				}
-				
-				
+		
+		if (in_array("Other_skills", $skill_set)) {			//other skill validation
+			if ($other_skill == ""){
+				$errormsg .= "<p>You have selected other skill, please describe it</p>";
+			}
+		}
+
 		//Displaying Errormsg or continueing the program
 		if ($errormsg != ""){
 			echo ("$errormsg");
 		} else {
+			
 
 			#Testing output of data Input and validation
 			echo "<p>Position Code: $position_code</p>";
@@ -195,6 +203,7 @@
 			echo "<p>State: $state</p>";
 			echo "<p>Postcode: $postcode</p>";
 			echo "<p>Skillset: " . implode(", ", $skill_set) . "</p>";
+			echo "<p>Other skill: $other_skill ";
 		}
 	}
 	 
