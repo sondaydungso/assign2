@@ -16,8 +16,86 @@
         return $data;
     }
 
-	function checking_state_postcode ($state, $postcode){
-		
+	function state_postcode_validation ($state, $postcode){
+		$postcode = (int)$postcode;
+		$msgerror = "";
+		switch ($state) {
+			//VIC
+			case "VIC":
+				if (($postcode <= 2999 || $postcode >= 4000) && ($postcode <= 7999 || $postcode >= 9000)) {
+					$msgerror = "<p>VIC postcode must be in the range of 3000 - 3999 or 8000 - 8999</p>";
+				}
+				break;
+			
+			//NSW
+			case "NSW":
+				if (($postcode <= 999|| $postcode >= 2000) && 
+					($postcode <= 1999|| $postcode >= 2600) && 
+					($postcode <= 2618|| $postcode >= 2899) &&
+					($postcode <= 2922|| $postcode >= 3000)
+				) {
+					$msgerror = "<p>NSW postcode must be in the range of 1000 - 1999 or 2000 - 2599 or 2619 - 2898 or 2921 - 2999</p>";
+				}
+				break;
+					 
+			//ACT
+			case "ACT":
+				if (($postcode <= 199|| $postcode >= 300) &&
+				($postcode <= 2599|| $postcode >= 2619) &&
+				($postcode <= 2899|| $postcode >= 2919) 
+				) {
+					$msgerror = "<p>ACT postcode must be in the range of 200 - 299 or 2600 - 2620 or 2900 - 2920</p>";
+				}
+				break;
+
+			//QLD	
+			case "QLD":
+				if (($postcode <= 3999|| $postcode >= 5000) &&
+				 	($postcode <= 8999 || $postcode >= 10000)
+				 ) {
+					$msgerror = "<p>QLD postcode must be in range of 4000 - 4999 or 9000 - 9999</p>";
+				} 
+				break;
+			
+			//SA
+			case "SA":
+				if (($postcode <= 4999|| $postcode >= 5800) &&
+					($postcode <= 5799|| $postcode >= 6000)
+				) {
+					$msgerror = "<p>SA postcode must be in range of 5000 - 57999 or 5800 - 5999</p>";
+				}
+				break;
+
+			//WA
+			case "WA":
+				if (($postcode <= 5999 || $postcode >= 6798) &&
+					($postcode <= 6799 || $postcode >= 7000) 
+				) {
+					$msgerror = "<p>WA postcode must be in range of 6000 - 6797 or 6800 - 6999</p>";
+				}
+				break;
+
+			//TAS
+			case "TAS":
+				if (($postcode <= 6999|| $postcode >= 7800) &&
+					($postcode <= 7799|| $postcode >= 8000)
+				)	{
+					$msgerror = "<p>TAS postcode must be in range of 7000 - 7799 or 7800 - 7999</p>";
+				}
+				break;
+
+			//NT
+			case "NT":
+				if (($postcode <= 799|| $postcode >= 900) &&
+					($postcode <= 899|| $postcode >= 1000)
+				) {
+					$msgerror = "<p>NT postcode must be in range of 800 - 899 or 900 - 999</p>";
+				}
+				break;
+
+ 		}
+
+		return $msgerror;
 	}
 
 	//Deny direct access from browser
@@ -92,10 +170,10 @@
 		if (!preg_match("/^\d{4}$/", $postcode)) {			//Post code validation
 			$errormsg .= "<p>Your post code must be a 4-digit number.</p>\n";
 		} else {
-				
+				$errormsg .= state_postcode_validation($state, $postcode);
 				}	
 		if ($errormsg != ""){
-			echo ("<p>$errormsg</p>");
+			echo ("$errormsg");
 		} else {
 
 			#Testing output of data Input and validation
