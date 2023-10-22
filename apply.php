@@ -68,9 +68,9 @@
 
     <fieldset>
         <legend>Gender</legend>
-        <label><input type="radio" name="gender" value="male" required/>Male</label>
+        <label><input type="radio" name="gender" value="male"/>Male</label>
         <label><input type="radio" name="gender" value="female"/>Female</label>
-        <label><input type="radio" name="gender" value="female"/>Rather not say</label>
+        <label><input type="radio" name="gender" value="Rather_not_say"/>Rather not say</label>
         <label><input type="radio" name="gender" value="other"/>Other</label>
     </fieldset>
 
