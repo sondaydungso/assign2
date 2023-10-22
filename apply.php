@@ -12,7 +12,7 @@
 
 <body>
 	<!-- 2 background vids on the sides -->
-<?php
+    <?php
 	include("bgvideo.inc")
 ?>
 
