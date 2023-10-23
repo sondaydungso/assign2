@@ -25,7 +25,7 @@
 
 
 
-<form id="application" method="post" action="processEOI.php" novalidate=”novalidate”>
+<form id="application" method="post" action="processEOI.php" novalidate> 
 <h1 id="formTitle">Tech Position Application Form</h1>
 <h2 id="formTitle2">MTD CORPORATE</h2>
 
@@ -33,7 +33,7 @@
 
 <fieldset>
 <legend>Desired Position</legend>
-<label for="jobNum">Please enter your job reference number
+<label for="jobNum">Please enter your job reference number (12690 or 13512)
     <input type="text" name="jobNum" id="jobNum" 
     pattern="^\d{5}$"
     placeholder="00000"
@@ -68,7 +68,7 @@
 
     <fieldset>
         <legend>Gender</legend>
-        <label><input type="radio" name="gender" value="male"/>Male</label>
+        <label><input type="radio" name="gender" value="male" required/>Male</label>
         <label><input type="radio" name="gender" value="female"/>Female</label>
         <label><input type="radio" name="gender" value="rather_not_say"/>Rather not say</label>
         <label><input type="radio" name="gender" value="other"/>Other</label>
@@ -90,7 +90,7 @@
         
     <p><label for="state">State
         <select name="state" id="state" required>
-            <option value="invalid">Please select</option>
+            <option value="">Please select</option>
             <option value="VIC">VIC</option>
             <option value="NSW">NSW</option>
             <option value="QLD">QLD</option>
@@ -123,7 +123,7 @@
     <p>
         <label for="telephone">Phone Number
         <input type="text" name="telephone" id="telephone" 
-        pattern="^[0-9 ]{8,20}$"
+        pattern="^[0-9 +]{8,20}$"
         required="required"
         placeholder="012345678"
         /></label>
