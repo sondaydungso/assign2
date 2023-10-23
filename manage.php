@@ -13,13 +13,13 @@
 <form id="manage" method="post" action="manage.php"> 
 <h1>Which method of searching do you prefer?</h1>
     <label><input type="radio" name="action" value="1"/>List all EOIs.</label><br>
-    <label><input type="radio" name="action" value="2"/>List all EOIs for a particular position code. (Our 2 position codes are 12690 and 13512)</label><br>
+    <label><input type="radio" name="action" value="2"/>List all EOIs for a particular position code.</label><br>
     <label><input type="radio" name="action" value="3"/>List all EOIs for a particular applicant given their first name, last name or both.</label><br>
     <label><input type="radio" name="action" value="4"/>Delete all EOIs with a specified job reference number.</label><br>
     <label><input type="radio" name="action" value="5"/>Change the Status of an EOI.</label><br>
     <br>
     <div> <input  type="submit" value="Apply Search"/> </div>
-    <div> <input  type="reset" value="Reset Answers"/> </div>
+    <div> <input  type="reset" value="Reset"/> </div>
 </form>
 <?php
     require ("settings.php");
@@ -31,7 +31,6 @@
     }
 
     function print_table($conn, $query) {
-        echo "<p>$query</p>";
         $result = mysqli_query($conn, $query);
 
         if (!$result) {
@@ -94,7 +93,7 @@
             switch ($action) {
                 case "1":
                     $query = "SELECT * FROM eoi ORDER BY EOInumber";
-
+                    echo "<br>";
                     print_table($conn, $query);
                 break;
                 case "2":
@@ -111,7 +110,7 @@
                     <input hidden name=\"action\" value=\"2\"/>
 
                     <div> <input  type=\"submit\" value=\"Apply Search\"/> </div>
-                    <div> <input  type=\"reset\" value=\"Reset Answers\"/> </div>
+                    <div> <input  type=\"reset\" value=\"Reset\"/> </div>
                     </form>
                     </p>"; 
                     if (!empty($_POST["jobID"])) {
@@ -124,7 +123,8 @@
                 case "3":
                     echo "<p>
                     <form id=\"manage3\" method=\"post\" action=\"manage.php\"> 
-                    <label for=\"jobID\">What is the name of the applicant you want to search?</label>
+                    <label>What is the name of the applicant you want to search?</label>
+                    <br>
                     <label for=\"firstName\">First Name
                     <input type=\"text\" name=\"firstName\" id=\"firstName\" 
                     placeholder=\"E.g. Duy Tan\"
@@ -138,7 +138,7 @@
                     <input hidden name=\"action\" value=\"3\"/>
 
                     <div> <input  type=\"submit\" value=\"Apply Search\"/> </div>
-                    <div> <input  type=\"reset\" value=\"Reset Answers\"/> </div>
+                    <div> <input  type=\"reset\" value=\"Reset\"/> </div>
                     </form>
                     </p>"; 
                     if (!(empty($_POST["firstName"]) AND empty($_POST["familyName"]))) {
@@ -159,21 +159,70 @@
                     } else {
                         echo "<p>Please enter the name of the applicant you're looking for. </p>";
                     }
+                break;    
+
+                case "4":
+                    echo "<p>
+                    <form id=\"manage4\" method=\"post\" action=\"manage.php\"> 
+                    <label for=\"jobID\">Which job record do you want to delete using reference number? 
+                    <select name=\"jobID\" id=\"jobID\" required>
+                        <option value=\"\">Please select</option>
+                        <option value=\"12690\">12690 (Software Engineer)</option>
+                        <option value=\"13512\">13512 (IoT Programmer)</option>
+                    </select>
+                    </label>
+                    
+                    <input hidden name=\"action\" value=\"4\"/>
+
+                    <div> <input  type=\"submit\" value=\"Delete Records\"/> </div>
+                    <div> <input  type=\"reset\" value=\"Reset\"/> </div>
+                    </form>
+                    </p>"; 
+                    if (!empty($_POST["jobID"])) {
+                        $jobID = $_POST["jobID"];
+                        $query = "DELETE FROM eoi WHERE JobReferenceNumber = $jobID";
+                        $result = $conn->query($query);
+                        echo "<p>Records with the chosen reference number have been deleted successfully.</p>";
+                    }  
                 break;
 
-                
+                case "5":
+                    echo "<p>
+                    <form id=\"manage5\" method=\"post\" action=\"manage.php\"> 
+                    <label>Write the EOI number of the record you would want to update Status: </label>
+                    <br>
+                    <label for=\"EOInumber\">EOInumber:
+                    <input type=\"number\" name=\"EOInumber\" id=\"EOInumber\" 
+                    placeholder=\"E.g. 10\"
+                    /></label>
+                    
+                    <label for=\"status\">Select the status you want to change to:
+                    <select name=\"status\" id=\"status\">
+                        <option value=\"\">Please select:</option>
+                        <option value=\"1\">New</option>
+                        <option value=\"2\">Current</option>
+                        <option value=\"3\">Final</option>
+                    </select>
+                    </label>
 
-                // case "4":
-                //     $query = "SELECT * FROM eoi ORDER BY EOInumber";
-                //     return $query;
-                // case "5":
-                //     $query = "SELECT * FROM eoi ORDER BY EOInumber";
-                //     return $query;
+                    <input hidden name=\"action\" value=\"5\"/>
+
+                    <div> <input  type=\"submit\" value=\"Apply Change\"/> </div>
+                    <div> <input  type=\"reset\" value=\"Reset\"/> </div>
+                    </form>
+                    </p>"; 
+
+                    if (empty($_POST["EOInumber"]) OR empty($_POST["status"])) {
+                        echo "<p>Please enter both an EOI number and a status</p>";
+                    } else {
+                        $EOInumber = $_POST["EOInumber"];
+                        $status = $_POST["status"];
+                        $query = "UPDATE eoi SET Status=$status WHERE EOInumber=$EOInumber ";
+                        $result = $conn->query($query);
+                        echo "<p>The record's status has been updated successfully</p>";
+                    }
+                break;
             }
-
-
-            
-
             mysqli_close($conn);
         }   
     }

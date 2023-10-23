@@ -240,7 +240,7 @@
 			foreach ($skill_set as $skill) {
 				$skill_string .= "$skill ";
 			}
-			$query = $query = "INSERT INTO $sql_table (JobReferenceNumber, FirstName, LastName, 
+			$query = "INSERT INTO $sql_table (JobReferenceNumber, FirstName, LastName, 
             											StreetAddress, SuburbTown, State, Postcode,
             											EmailAddress, PhoneNumber, Skills, OtherSkills,
             											Status
