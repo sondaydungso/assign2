@@ -1,4 +1,7 @@
+
+
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
 <title>Manage Content</title>
@@ -21,8 +24,16 @@
     <div> <input  type="submit" value="Apply Search"/> </div>
     <div> <input  type="reset" value="Reset"/> </div>
 </form>
+<a href="logout.php">Logout?</a>
 <?php
-    require ("settings.php");
+    require_once("settings.php");
+   
+    //Prevent accessing directly from URL
+        if(!isset($_SERVER['HTTP_REFERER'])){
+            header('location:login.php');     
+            exit;
+        }
+
     function sanitise_input($data){ 
         $data = trim($data);				//remove spaces
         $data = stripslashes($data);		//remove backslashes in front of quotes

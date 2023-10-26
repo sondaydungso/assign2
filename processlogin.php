@@ -1,4 +1,6 @@
+
 <?php
+
 
 // Database connection code here
 require ("settings.php");
@@ -8,11 +10,11 @@ $conn = @mysqli_connect($host, $user, $pwd, $sql_db);
 $username = $_POST['username'];
 $password = $_POST['password'];
 
-// Retrieve user's data from the database
+
 $sql = "SELECT * FROM managers WHERE username = '$username'";
-$check_lock_sql = "SELECT account_locked FROM managers WHERE username = '$username'";
+$check_lock_database = "SELECT account_locked FROM managers WHERE username = '$username'";
 $result = $conn->query($sql);
-$result1 = $conn->query($check_lock_sql);
+$result1 = $conn->query($check_lock_database);
 
 if ($result->num_rows == 1) {
     $row = $result->fetch_assoc();
@@ -20,17 +22,19 @@ if ($result->num_rows == 1) {
 
     // Check if the password is correct
     if ($password == $hashed_password) {
+
+        
+
         // Reset login attempts and update last login timestamp
         $reset_attempts = "UPDATE managers SET login_attempts = 0, last_login_attempt = NOW() WHERE username = '$username'";
         $conn->query($reset_attempts);
 
-        // Store manager's ID in the session for access control
-        $_SESSION['manager_id'] = $row['id'];
+        
+        
 
         header("Location: manage.php");
         exit;
     } else {
-        // Password is incorrect
         $update_attempts = "UPDATE managers SET login_attempts = login_attempts + 1, last_login_attempt = NOW() WHERE username = '$username'";
         $conn->query($update_attempts);
 
@@ -55,7 +59,6 @@ if ($result->num_rows == 1) {
 if ($result1->num_rows == 1) {
     $row = $result1->fetch_assoc();
     if ($row["account_locked"] == 1) {
-        // Account is locked
         echo "Your account is locked. Please contact support for assistance.";
         exit;
     }
