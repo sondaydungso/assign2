@@ -2,17 +2,22 @@
 <html>
 <head>
     <title>Manager Login</title>
+    <link rel="stylesheet" type="text/css" href="styles/style.css">
 </head>
-<body>
-    <h1>Manager Login</h1>
-    <form action="processlogin.php" method="POST">
-        <label for="username">Username:</label>
-        <input type="text" name="username" required>
-        <br>
-        <label for="password">Password:</label>
-        <input type="password" name="password" required>
-        <br>
-        <input type="submit" value="Login">
-    </form>
+
+<body id="bodylogin">
+    <div class="login">
+  <div class="login-triangle"></div>
+  
+  <h2 class="login-header">Log in</h2>
+
+  <form class="login-container" action="processlogin.php" method="POST">
+    <p><input type="text" name="username" placeholder="Username"></p>
+    <p><input type="password" name="password" placeholder="Password"></p>
+    <p><input type="submit" value="Log in"></p>
+  </form>
+</div>
+<p>the username is Thai Son ; the password is 160105</p>
+
 </body>
 </html>
