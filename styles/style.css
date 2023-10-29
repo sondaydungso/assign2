@@ -244,8 +244,8 @@ input[type=submit], input[type=reset]{
   background-color: #000000;
   color: whitesmoke;
   padding: 10px;
+  margin-bottom: 10px;
 } 
-
 
 
 #inh{
@@ -288,7 +288,7 @@ input[type=submit], input[type=reset]{
 @import url(https://fonts.googleapis.com/css?family=Open+Sans:400,700);
 
 #bodylogin{
-  background: #456;
+  background: #ccc;
   font-family: 'Open Sans', sans-serif;
 }
 
@@ -311,21 +311,21 @@ input[type=submit], input[type=reset]{
   margin-right: auto;
   margin-left: auto;
   border: 12px solid transparent;
-  border-bottom-color: #28d;
+  border-bottom-color: black;
 }
 
 .login-header {
-  background: #28d;
+  background: black;
   padding: 20px;
   font-size: 1.4em;
   font-weight: normal;
   text-align: center;
   text-transform: uppercase;
-  color: #fff;
+  color: white;
 }
 
 .login-container {
-  background: #ebebeb;
+  background: #fff;
   padding: 12px;
 }
 
@@ -344,6 +344,7 @@ input[type=submit], input[type=reset]{
   outline: 0;
   font-family: inherit;
   font-size: 0.95em;
+  background-color: white;
 }
 
 .login input[type="username"],
@@ -360,7 +361,7 @@ input[type=submit], input[type=reset]{
 }
 
 .login input[type="submit"] {
-  background: #28d;
+  background: black;
   border-color: transparent;
   color: #fff;
   cursor: pointer;
@@ -374,3 +375,36 @@ input[type=submit], input[type=reset]{
 .login input[type="submit"]:focus {
   border-color: #05a;
 }
+
+/* For manage.php */
+.wrapper {display: flex; justify-content: space-between;}
+
+.main, .sidebar {border: 3px solid black;
+                  padding: 15px; 
+                  background-color: #fff;
+                  border-radius: 25px;}
+
+.main {
+  width: 68%;
+  height: 100%;
+  /* background-size: 100% 100%; */
+  overflow-y: auto;
+}
+
+.sidebar {
+  width: 25%;
+  height: 400px;
+
+/* Make sticky */
+  position: -webkit-sticky;
+  position: sticky;
+  top: 15px;
+}
+
+body {
+  background-color: #ccc;
+  font-family: sans-serif;
+  padding: 10px;
+}
+
+.wrapper .needMargin {margin: 8px;}
