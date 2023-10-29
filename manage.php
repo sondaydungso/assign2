@@ -29,7 +29,7 @@
     <div> <input  type="submit" value="Apply Search"/>
     <input  type="reset" value="Reset"/> </div>
 
-    <a href="logout.php">Logout?</a>
+    <a href="login.php">Logout?</a>
 </form>
 </div>
 
