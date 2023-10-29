@@ -9,15 +9,10 @@
 <meta charset="utf-8">
 <meta name="description" content="Manage Content">
 <meta name="author" content="Tan Pham Duy">
-<link rel="icon" type="image/x-icon" href="images/page_logo.png">
-<link rel="stylesheet" type="text/css" href="styles/style.css">
 </head>
 
 <body>
 
-<div class="wrapper">
-
-<div class="sidebar">
 <form id="manage" method="post" action="manage.php"> 
 <h1>Which method of searching do you prefer?</h1>
     <label><input type="radio" name="action" value="1"/>List all EOIs.</label><br>
@@ -26,14 +21,10 @@
     <label><input type="radio" name="action" value="4"/>Delete all EOIs with a specified job reference number.</label><br>
     <label><input type="radio" name="action" value="5"/>Change the Status of an EOI.</label><br>
     <br>
-    <div> <input  type="submit" value="Apply Search"/>
-    <input  type="reset" value="Reset"/> </div>
-
-    <a href="logout.php">Logout?</a>
+    <div> <input  type="submit" value="Apply Search"/> </div>
+    <div> <input  type="reset" value="Reset"/> </div>
 </form>
-</div>
-
-<div class="main">
+<a href="logout.php">Logout?</a>
 <?php
     require_once("settings.php");
    
@@ -52,13 +43,11 @@
 
     function print_table($conn, $query) {
         $result = mysqli_query($conn, $query);
-        $row = mysqli_fetch_assoc($result);
+
         if (!$result) {
             echo "<p>Something is wrong with " . $query . "</p>";
-        } elseif (empty($row)) {
-            echo "<p>There is no records that match your description. </p>";
         } else {
-            echo "<table class=\"database\">";
+            echo "<table border=\"1\">";
             echo "<tr>\n"
             . "<th scope=\"col\">EOI number</th>\n"
             . "<th scope=\"col\">Job Reference Number</th>\n"
@@ -130,10 +119,9 @@
                     </label>
                     
                     <input hidden name=\"action\" value=\"2\"/>
-                    <br>
-                    <br>
-                    <div> <input  type=\"submit\" value=\"Apply Search\"/>
-                    <input  type=\"reset\" value=\"Reset\"/> </div>
+
+                    <div> <input  type=\"submit\" value=\"Apply Search\"/> </div>
+                    <div> <input  type=\"reset\" value=\"Reset\"/> </div>
                     </form>
                     </p>"; 
                     if (!empty($_POST["jobID"])) {
@@ -159,10 +147,9 @@
                     /></label>
                     
                     <input hidden name=\"action\" value=\"3\"/>
-                    <br>
-                    <br>
-                    <div> <input  type=\"submit\" value=\"Apply Search\"/>
-                    <input  type=\"reset\" value=\"Reset\"/> </div>
+
+                    <div> <input  type=\"submit\" value=\"Apply Search\"/> </div>
+                    <div> <input  type=\"reset\" value=\"Reset\"/> </div>
                     </form>
                     </p>"; 
                     if (!(empty($_POST["firstName"]) AND empty($_POST["familyName"]))) {
@@ -197,10 +184,9 @@
                     </label>
                     
                     <input hidden name=\"action\" value=\"4\"/>
-                    <br>
-                    <br>
-                    <div> <input  type=\"submit\" value=\"Delete Records\"/>
-                    <input  type=\"reset\" value=\"Reset\"/> </div>
+
+                    <div> <input  type=\"submit\" value=\"Delete Records\"/> </div>
+                    <div> <input  type=\"reset\" value=\"Reset\"/> </div>
                     </form>
                     </p>"; 
                     if (!empty($_POST["jobID"])) {
@@ -231,10 +217,9 @@
                     </label>
 
                     <input hidden name=\"action\" value=\"5\"/>
-                    <br>
-                    <br>
-                    <div> <input  type=\"submit\" value=\"Apply Change\"/>
-                    <input  type=\"reset\" value=\"Reset\"/> </div>
+
+                    <div> <input  type=\"submit\" value=\"Apply Change\"/> </div>
+                    <div> <input  type=\"reset\" value=\"Reset\"/> </div>
                     </form>
                     </p>"; 
 
@@ -253,8 +238,6 @@
         }   
     }
 ?>
-</div> <!-- for main -->
-</div> <!-- for wrapper -->
 
 </body>
 </html>
