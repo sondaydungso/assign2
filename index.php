@@ -24,7 +24,7 @@
 	<!--Context-->
 	<h1>Still not knowing what you should do in the new job? Click "Job Description" above</h1>
 
-	<p>Want to apply? Click "Apply now" :<a class="link" href="apply.html">Apply now</a>( Click the blank space to see what happen)</p>
+	<p>Want to apply? Click "Apply now" :<a class="link" href="apply.php">Apply now</a>( Click the blank space to see what happen)</p>
 	<p>Currently, we are working out with some company to provide the best service for the customers:</p>
 	<div id="flexbox">
 	<div><a href="https://www.youtube.com/"><img class="indp" src="images/youtube.png" alt="Youtube Logo"></a></div>
