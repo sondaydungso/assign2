@@ -11,7 +11,7 @@
 <link rel="stylesheet" type="text/css" href="styles/style.css">
 </head>
 
-<body class="manageBody">
+<body>
 
 <div class="wrapper">
 
