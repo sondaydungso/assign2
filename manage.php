@@ -55,9 +55,12 @@
         $row = mysqli_fetch_assoc($result);
         if (!$result) {
             echo "<p>Something is wrong with " . $query . "</p>";
-        } elseif (empty($row)) {
-            echo "<p>There is no records that match your description. </p>";
+        } elseif (empty($row)) { 
+            // Check if there is any record returned by the query
+            echo "<p>There is no record that match your description.</p>";
+            mysqli_free_result($result);
         } else {
+            $result = mysqli_query($conn, $query);
             echo "<table class=\"database\">";
             echo "<tr>\n"
             . "<th scope=\"col\">EOI number</th>\n"
@@ -91,6 +94,7 @@
                 . "<td>" . $row["OtherSkills"] . "</td>\n"
                 . "<td>" . $row["Status"] . "</td>\n"
                 . "</tr>\n";
+                
             }
             echo "</table>\n";
 
