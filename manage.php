@@ -13,7 +13,7 @@
 <link rel="stylesheet" type="text/css" href="styles/style.css">
 </head>
 
-<body>
+<body class="manageBody">
 
 <div class="wrapper">
 
