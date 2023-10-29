@@ -9,26 +9,33 @@
 <meta charset="utf-8">
 <meta name="description" content="Manage Content">
 <meta name="author" content="Tan Pham Duy">
+<link rel="icon" type="image/x-icon" href="images/page_logo.png">
+<link rel="stylesheet" type="text/css" href="styles/style.css">
 </head>
 
 <body>
 
+<div class="wrapper">
+
+<div class="sidebar">
 <form id="manage" method="post" action="manage.php"> 
-<h1>Which method of searching do you prefer?</h1>
-    <label><input type="radio" name="action" value="1"/>List all EOIs.</label><br>
-    <label><input type="radio" name="action" value="2"/>List all EOIs for a particular position code.</label><br>
-    <label><input type="radio" name="action" value="3"/>List all EOIs for a particular applicant given their first name, last name or both.</label><br>
-    <label><input type="radio" name="action" value="4"/>Delete all EOIs with a specified job reference number.</label><br>
-    <label><input type="radio" name="action" value="5"/>Change the Status of an EOI.</label><br>
+<h3>Which method of searching do you prefer?</h3>
+    <label><input class="needMargin" type="radio" name="action" value="1"/>List all EOIs.</label><br>
+    <label><input class="needMargin" type="radio" name="action" value="2"/>List all EOIs for a particular position code.</label><br>
+    <label><input class="needMargin" type="radio" name="action" value="3"/>List all EOIs for a particular applicant given their first name, last name or both.</label><br>
+    <label><input class="needMargin" type="radio" name="action" value="4"/>Delete all EOIs with a specified job reference number.</label><br>
+    <label><input class="needMargin" type="radio" name="action" value="5"/>Change the Status of an EOI.</label><br>
     <br>
-    <div> <input  type="submit" value="Apply Search"/> </div>
-    <div> <input  type="reset" value="Reset"/> </div>
+    <div> <input  type="submit" value="Apply Search"/>
+    <input  type="reset" value="Reset"/> </div>
+
+    <a href="login.php">Logout?</a>
 </form>
-<a href="logout.php">Logout?</a>
+
 <?php
     require_once("settings.php");
    
-    //Prevent accessing directly from URL
+    // Prevent accessing directly from URL
         if(!isset($_SERVER['HTTP_REFERER'])){
             header('location:login.php');     
             exit;
@@ -43,11 +50,16 @@
 
     function print_table($conn, $query) {
         $result = mysqli_query($conn, $query);
-
+        $row = mysqli_fetch_assoc($result);
         if (!$result) {
             echo "<p>Something is wrong with " . $query . "</p>";
+        } elseif (empty($row)) { 
+            // Check if there is any record returned by the query
+            echo "<p>There is no record that match your description.</p>";
+            mysqli_free_result($result);
         } else {
-            echo "<table border=\"1\">";
+            $result = mysqli_query($conn, $query);
+            echo "<table class=\"database\">";
             echo "<tr>\n"
             . "<th scope=\"col\">EOI number</th>\n"
             . "<th scope=\"col\">Job Reference Number</th>\n"
@@ -80,6 +92,7 @@
                 . "<td>" . $row["OtherSkills"] . "</td>\n"
                 . "<td>" . $row["Status"] . "</td>\n"
                 . "</tr>\n";
+                
             }
             echo "</table>\n";
 
@@ -119,9 +132,10 @@
                     </label>
                     
                     <input hidden name=\"action\" value=\"2\"/>
-
-                    <div> <input  type=\"submit\" value=\"Apply Search\"/> </div>
-                    <div> <input  type=\"reset\" value=\"Reset\"/> </div>
+                    <br>
+                    <br>
+                    <div> <input  type=\"submit\" value=\"Apply Search\"/>
+                    <input  type=\"reset\" value=\"Reset\"/> </div>
                     </form>
                     </p>"; 
                     if (!empty($_POST["jobID"])) {
@@ -147,9 +161,10 @@
                     /></label>
                     
                     <input hidden name=\"action\" value=\"3\"/>
-
-                    <div> <input  type=\"submit\" value=\"Apply Search\"/> </div>
-                    <div> <input  type=\"reset\" value=\"Reset\"/> </div>
+                    <br>
+                    <br>
+                    <div> <input  type=\"submit\" value=\"Apply Search\"/>
+                    <input  type=\"reset\" value=\"Reset\"/> </div>
                     </form>
                     </p>"; 
                     if (!(empty($_POST["firstName"]) AND empty($_POST["familyName"]))) {
@@ -184,9 +199,10 @@
                     </label>
                     
                     <input hidden name=\"action\" value=\"4\"/>
-
-                    <div> <input  type=\"submit\" value=\"Delete Records\"/> </div>
-                    <div> <input  type=\"reset\" value=\"Reset\"/> </div>
+                    <br>
+                    <br>
+                    <div> <input  type=\"submit\" value=\"Delete Records\"/>
+                    <input  type=\"reset\" value=\"Reset\"/> </div>
                     </form>
                     </p>"; 
                     if (!empty($_POST["jobID"])) {
@@ -217,9 +233,10 @@
                     </label>
 
                     <input hidden name=\"action\" value=\"5\"/>
-
-                    <div> <input  type=\"submit\" value=\"Apply Change\"/> </div>
-                    <div> <input  type=\"reset\" value=\"Reset\"/> </div>
+                    <br>
+                    <br>
+                    <div> <input  type=\"submit\" value=\"Apply Change\"/>
+                    <input  type=\"reset\" value=\"Reset\"/> </div>
                     </form>
                     </p>"; 
 
@@ -238,6 +255,8 @@
         }   
     }
 ?>
+</div> <!-- for main -->
+</div> <!-- for wrapper -->
 
 </body>
 </html>
