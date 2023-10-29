@@ -401,7 +401,7 @@ input[type=submit], input[type=reset]{
   top: 15px;
 }
 
-.manageBody {
+body {
   background-color: #ccc;
   font-family: sans-serif;
   padding: 10px;
