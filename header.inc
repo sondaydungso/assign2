@@ -11,6 +11,7 @@
         <a class=\"link\" href=\"about.php\">Group Detail</a>
         <a class=\"link\" href=\"enhancement.php\">Group's enhancements</a>
         <a class=\"link\" href=\"apply.php\">Apply now</a>
+        <a class=\"link\" href=\"login.php\">Manager page</a>
     </nav>
     </header>
     ";

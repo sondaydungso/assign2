@@ -24,7 +24,7 @@
     <div> <input  type="submit" value="Apply Search"/> </div>
     <div> <input  type="reset" value="Reset"/> </div>
 </form>
-<a href="logout.php">Logout?</a>
+<a href="login.php">Logout?</a>
 <?php
     require_once("settings.php");
    
