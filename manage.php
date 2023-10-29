@@ -19,12 +19,12 @@
 
 <div class="sidebar">
 <form id="manage" method="post" action="manage.php"> 
-<h1>Which method of searching do you prefer?</h1>
-    <label><input type="radio" name="action" value="1"/>List all EOIs.</label><br>
-    <label><input type="radio" name="action" value="2"/>List all EOIs for a particular position code.</label><br>
-    <label><input type="radio" name="action" value="3"/>List all EOIs for a particular applicant given their first name, last name or both.</label><br>
-    <label><input type="radio" name="action" value="4"/>Delete all EOIs with a specified job reference number.</label><br>
-    <label><input type="radio" name="action" value="5"/>Change the Status of an EOI.</label><br>
+<h3>Which method of searching do you prefer?</h3>
+    <label><input class="needMargin" type="radio" name="action" value="1"/>List all EOIs.</label><br>
+    <label><input class="needMargin" type="radio" name="action" value="2"/>List all EOIs for a particular position code.</label><br>
+    <label><input class="needMargin" type="radio" name="action" value="3"/>List all EOIs for a particular applicant given their first name, last name or both.</label><br>
+    <label><input class="needMargin" type="radio" name="action" value="4"/>Delete all EOIs with a specified job reference number.</label><br>
+    <label><input class="needMargin" type="radio" name="action" value="5"/>Change the Status of an EOI.</label><br>
     <br>
     <div> <input  type="submit" value="Apply Search"/>
     <input  type="reset" value="Reset"/> </div>
@@ -37,7 +37,7 @@
 <?php
     require_once("settings.php");
    
-    //Prevent accessing directly from URL
+    // Prevent accessing directly from URL
         if(!isset($_SERVER['HTTP_REFERER'])){
             header('location:login.php');     
             exit;
