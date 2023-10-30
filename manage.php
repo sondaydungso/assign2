@@ -245,9 +245,19 @@
                     } else {
                         $EOInumber = $_POST["EOInumber"];
                         $status = $_POST["status"];
-                        $query = "UPDATE eoi SET Status=$status WHERE EOInumber=$EOInumber ";
+
+                        // This part is used to check if a record with that EOInumber really exist before moving to update
+                        $query= "SELECT * FROM eoi WHERE EOInumber = $EOInumber";
                         $result = $conn->query($query);
-                        echo "<p>The record's status has been updated successfully</p>";
+                        if (!($result->num_rows > 0)) {
+                            echo "<p>There is no record with such EOI number";
+                        } else {
+                            #free up the memory, after using the result pointer
+                            mysqli_free_result($result);
+                            $query = "UPDATE eoi SET Status=$status WHERE EOInumber=$EOInumber ";
+                            $result = $conn->query($query);
+                            echo "<p>The record's status has been updated successfully</p>";
+                        }
                     }
                 break;
             }

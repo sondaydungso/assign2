@@ -147,7 +147,7 @@
 			$errormsg = "<p>Position code must be exactly 5 alphanumeric characters.</p>";
 		} else {
 			if (!in_array($position_code, $possible_position_code)) {
-				echo "<p>The position code you enter does not match any of our positions' codes.";
+				$errormsg = "<p>The position code you enter does not match any of our positions' codes.";
 			}
 		}
 		if (!preg_match("/^[a-zA-Z ]{1,20}$/", $firstname )){	//Firstname Validation
@@ -251,7 +251,8 @@
             											)";
  
 			$result = mysqli_query($conn, $query);
-			if (!$result) {
+			// This line is used to check if the eoi table has any record entered yet
+			if (!($result->num_rows > 0)) {
 				echo "Unable to submit, Error:";
 				echo ("<p>". "". mysqli_error($conn) ."/<p>");
 			} else {
