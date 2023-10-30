@@ -11,7 +11,7 @@
   
   <h2 class="login-header">Log in</h2>
 
-  <form class="login-container" action="processlogin.php" method="POST">
+  <form class="login-container" action="phpenhancement.php" method="POST">
     <p><input type="text" name="username" placeholder="Username"></p>
     <p><input type="password" name="password" placeholder="Password"></p>
     <p><input type="submit" value="Log in"></p>
